@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 
-
-
-
 class ScrollAnimationWidget extends StatefulWidget {
   @override
   State<ScrollAnimationWidget> createState() => _ScrollAnimationWidgetState();
 }
 
 class _ScrollAnimationWidgetState extends State<ScrollAnimationWidget> {
-  int indexWidget = 0;
+ int indexWidget = 0;
   String selected = "Definition";
   Widget screenWidget = _menuScreen[0].widget;
   final ScrollController itemScrollController = ScrollController();
@@ -20,25 +17,54 @@ class _ScrollAnimationWidgetState extends State<ScrollAnimationWidget> {
   @override
   void initState() {
     super.initState();
+    itemScrollController2.addListener(() {
+      final indices = itemScrollController2.position.pixels;
+
+      if (indices < 10) {
+        setState(() {
+          // selected = _menuScreen[0].title;
+          itemScrollController.animateTo(0,
+              duration: Duration(milliseconds: 250),
+              curve: Curves.easeInOutCubic);
+        });
+      } else if (indices < 6) {
+        setState(() {
+          // selected = _menuScreen[1].title;
+          itemScrollController.animateTo(519,
+              duration: Duration(milliseconds: 250),
+              curve: Curves.easeInOutCubic);
+        });
+      } else if (indices < 12) {
+        setState(() {
+          // selected = _menuScreen[2].title;
+          itemScrollController.animateTo(1027,
+              duration: Duration(milliseconds: 250),
+              curve: Curves.easeInOutCubic);
+        });
+      } else if (indices < 18) {
+        setState(() {
+          itemScrollController.animateTo(1556,
+              duration: Duration(milliseconds: 250),
+              curve: Curves.easeInOutCubic);
+          // selected = _menuScreen[3].title;
+        });
+      } else {
+        setState(() {
+          // selected = _menuScreen[4].title;
+          itemScrollController.animateTo(2060,
+              duration: Duration(milliseconds: 250),
+              curve: Curves.easeInOutCubic);
+        });
+      }
+      // print(indices);
+
+      print(indices);
+    });
+
     itemScrollController.addListener(() {
       final indices = itemScrollController.position.pixels;
 
-      // .where((item) {
-      //   final isTopVisible = item >= 0;
-      //   final isBottomVisible = item.itemTrailingEdge <= 0.7;
-      //   return isTopVisible && isBottomVisible;
-      // })
-      // .map((item) => item.index)
-      // .toList();
-      // Timer(Duration(milliseconds: 250), () {
-      //   setState(() {
-      //     currentMenuIndex = indices[0];
-      //     selected = _menuScreen[currentMenuIndex].title;
-      //   });
-      // });
-      setState(() {
-        selected = _menuScreen[0].title;
-      });
+      Future.delayed(Duration(milliseconds: 500));
 
       if (indices < 200) {
         setState(() {
@@ -52,12 +78,16 @@ class _ScrollAnimationWidgetState extends State<ScrollAnimationWidget> {
         setState(() {
           selected = _menuScreen[2].title;
         });
-      } else {
+      } else if (indices < 1600) {
         setState(() {
           selected = _menuScreen[3].title;
         });
+      } else {
+        setState(() {
+          selected = _menuScreen[4].title;
+        });
       }
-      print(indices);
+      // print(indices);
     });
   }
 
@@ -89,6 +119,7 @@ class _ScrollAnimationWidgetState extends State<ScrollAnimationWidget> {
             alignment: Alignment.center,
             height: 30,
             child: ListView.builder(
+                controller: itemScrollController2,
                 scrollDirection: Axis.horizontal,
                 itemCount: _menuScreen.length,
                 itemBuilder: (context, index) {
@@ -117,6 +148,12 @@ class _ScrollAnimationWidgetState extends State<ScrollAnimationWidget> {
                         } else if (index == 3) {
                           setState(() {
                             itemScrollController.animateTo(1556,
+                                duration: Duration(milliseconds: 250),
+                                curve: Curves.easeInOutCubic);
+                          });
+                        } else if (index == 4) {
+                          setState(() {
+                            itemScrollController.animateTo(2060,
                                 duration: Duration(milliseconds: 250),
                                 curve: Curves.easeInOutCubic);
                           });
@@ -173,6 +210,7 @@ List<_MenuScreen> _menuScreen = [
   _MenuScreen(title: 'Subtitle2', widget: SectionTwo()),
   _MenuScreen(title: 'Subtitle3', widget: SectionThree()),
   _MenuScreen(title: 'Subtitle4', widget: SectionFour()),
+  _MenuScreen(title: 'Subtitle5', widget: SectionFive()),
 ];
 
 class SectionOne extends StatefulWidget {
@@ -224,5 +262,18 @@ class _SectionFourState extends State<SectionFour> {
   Widget build(BuildContext context) {
     return Container(
         height: 500, color: Colors.blue, child: Text('SectionFour'));
+  }
+}
+
+class SectionFive extends StatefulWidget {
+  @override
+  State<SectionFive> createState() => _SectionFiveState();
+}
+
+class _SectionFiveState extends State<SectionFive> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 500, color: Colors.white, child: Text('SectionFive'));
   }
 }
